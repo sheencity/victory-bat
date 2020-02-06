@@ -1,14 +1,15 @@
 // https://github.com/dragon-yuan/2019-nCoV-news
 //  https://github.com/fangzesheng/free-api
 
+import { writeFileSync } from 'fs';
 
-import { get } from 'superagent';
+import { get, post } from 'superagent';
 class util {
 
     /**
-     * 疫情信息
+     * 疫情信息查询
      */
-    public async  getnCoVInfo(keyword?: string, page?: number) {
+    public async  getnCoVInfo(keyword: string = '', page: number = 1) {
         const a = await get(`http://ncov.news.dragon-yuan.me/api/news`).query({ search: keyword, page: page });
         return a;
     }
@@ -43,11 +44,16 @@ class util {
         return FeiYanXiaoQuUrl;
     }
 
-    
+    /** 
+     * 根据城市名称查询疫情
+     */
+    public async getInfoByCity(city: string) {
+        return await this.getnCoVInfo(city);
+    }
 }
 
 async function run() {
     const a = new util();
-    console.log(await a.getnCoVInfo('北京',1));
+    console.log(await a.getFeiYanXiaoQu());
 }
 run();
