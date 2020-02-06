@@ -17,9 +17,9 @@ class util {
      * 辟谣信息
      */
     public async getPiYao() {
-        const result = await get(`https://ncov.dxy.cn/ncovh5/view/pneumonia_rumors?from=dxy&source=undefined`);
+        //const result = await get(`https://ncov.dxy.cn/ncovh5/view/pneumonia_rumors?from=dxy&source=undefined`);
         const piyaoUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia_rumors?from=dxy&source=undefined`;
-        return result;
+        return piyaoUrl;
     }
     /**
      * 在线诊断
