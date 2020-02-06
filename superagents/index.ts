@@ -50,6 +50,13 @@ class util {
     public async getInfoByCity(city: string) {
         return await this.getnCoVInfo(city);
     }
+    /**
+     * 防护知识
+     */
+    public getFangHuZhiShi() {
+        const FangHuZhiShiUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia_recommends?from=dxy`;
+        return FangHuZhiShiUrl;
+    }
 }
 
 async function run() {
