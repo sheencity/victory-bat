@@ -35,6 +35,13 @@ class util {
         const YiQingShiKuangUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia?entrysource=APPiOS&from=groupmessage`;
         return YiQingShiKuangUrl;
     }
+    /**
+     * 获取身边的肺炎小区
+     */
+    public async getFeiYanXiaoQu() {
+        const FeiYanXiaoQuUrl = `https://ncov.html5.qq.com/community?channelid=17&from=groupmessage&isappinstalled=0`;
+        return FeiYanXiaoQuUrl;
+    }
 
     
 }
