@@ -1,10 +1,11 @@
 // https://github.com/dragon-yuan/2019-nCoV-news
 //  https://github.com/fangzesheng/free-api
 
-import { writeFileSync } from 'fs';
 
-import { get, post } from 'superagent';
-class util {
+import { get } from 'superagent';
+import { writeFileSync } from 'fs';
+import { IResponse } from '../interfaces/response.interface';
+export class ApiCollection {
 
     /**
      * 疫情信息查询
@@ -25,7 +26,7 @@ class util {
     /**
      * 在线诊断
      */
-    public async getZaiXianZhenDuan() {
+    public getZaiXianZhenDuan() {
         const ZaiXianZhenDuanUrl = `https://ask.dxy.com/ama/index#/activity-share?activity_id=111`;
         return ZaiXianZhenDuanUrl;
     }
@@ -39,7 +40,7 @@ class util {
     /**
      * 获取身边的肺炎小区
      */
-    public async getFeiYanXiaoQu() {
+    public getFeiYanXiaoQu() {
         const FeiYanXiaoQuUrl = `https://ncov.html5.qq.com/community?channelid=17&from=groupmessage&isappinstalled=0`;
         return FeiYanXiaoQuUrl;
     }
@@ -48,7 +49,8 @@ class util {
      * 根据城市名称查询疫情
      */
     public async getInfoByCity(city: string) {
-        return await this.getnCoVInfo(city);
+        const result = await this.getnCoVInfo(city);
+        return JSON.parse(result.text) as IResponse;
     }
     /**
      * 防护知识
@@ -65,9 +67,3 @@ class util {
         return FeiYanZhengZhuangUrl;
     }
 }
-
-async function run() {
-    const a = new util();
-    console.log(await a.getFeiYanXiaoQu());
-}
-run();

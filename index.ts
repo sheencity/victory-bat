@@ -1,8 +1,11 @@
 import { Wechaty, Friendship, Contact, Message, ScanStatus, Room } from 'wechaty';
 import { ContactSelf } from 'wechaty/dist/src/user';
 import * as qrcodeTerminal from 'qrcode-terminal';
-import { textBuilder } from './defaultText';
-import { replyFilter, keywords } from './reply';
+import { menuTextBuilder } from './defaultText';
+import { replyFilter } from './reply';
+
+// 私聊触发关键词
+const keywords = ['帮助', '辟谣', '门诊', '预防', '实况', '专家', '症状', '疫情', '冠状', '肺炎'];
 
 // 延时函数，防止检测出类似机器人行为操作
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -47,11 +50,11 @@ async function onMessage(msg: Message) {
     if (contact.friend() && !room) {
         // 优先使用昵称
         const name = await contact.alias() || msgSenderName;
-        if (keywords.some(k => content.includes(k))) {
+        // if (keywords.some(k => content.includes(k))) {
             // 加延迟，防封号
             await delay(2000);
             await contact.say(await replyFilter(content, name));
-        }
+        // }
     }
 
     // 群聊
@@ -74,7 +77,7 @@ function onFriendship(friendship: Friendship) {
 async function onRoomJoin(room: Room, inviteeList: Contact[], inviter: Contact, ) {
     const nameList = inviteeList.map(c => c.name()).join(',')
     await delay(2000);
-    room.say(textBuilder(nameList));
+    room.say(menuTextBuilder(nameList));
     console.log(`Room ${room.topic()} got new member ${nameList}, invited by ${inviter}`)
 }
 
