@@ -7,10 +7,19 @@ class util {
         return a;
     }
     public async getPiYao() {
-        const result = await superagent.get(`https://ncov.dxy.cn/ncovh5/view/pneumonia_rumors?from=dxy&source=undefined`);
         const piyaoUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia_rumors?from=dxy&source=undefined`;
         return piyaoUrl;
     }
+    public async getZaiXianZhenDuan() {
+        const ZaiXianZhenDuanUrl = `https://ask.dxy.com/ama/index#/activity-share?activity_id=111`;
+        return ZaiXianZhenDuanUrl;
+    }
+    public async getYiQingShiKuang() {
+        const YiQingShiKuangUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia?entrysource=APPiOS&from=groupmessage`;
+        return YiQingShiKuangUrl;
+    }
+
+    
 }
 
 async function run() {
