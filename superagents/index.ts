@@ -57,6 +57,13 @@ class util {
         const FangHuZhiShiUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia_recommends?from=dxy`;
         return FangHuZhiShiUrl;
     }
+    /**
+     * 肺炎症状
+     */
+    public getFeiYanZhengZhuang() {
+        const FeiYanZhengZhuangUrl = `https://ask.dxy.com/ama/index#/disease/24677/info/1`;
+        return FeiYanZhengZhuangUrl;
+    }
 }
 
 async function run() {
