@@ -8,7 +8,7 @@ class util {
     /**
      * 疫情信息
      */
-    public async  getnCoVInfo(keyword: string, page: number) {
+    public async  getnCoVInfo(keyword?: string, page?: number) {
         const a = await get(`http://ncov.news.dragon-yuan.me/api/news`).query({ search: keyword, page: page });
         return a;
     }
@@ -35,6 +35,6 @@ class util {
 
 async function run() {
     const a = new util();
-    console.log(await a.getPiYao());
+    console.log(await a.getnCoVInfo('北京',1));
 }
 run();
