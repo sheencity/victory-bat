@@ -21,10 +21,16 @@ class util {
         const piyaoUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia_rumors?from=dxy&source=undefined`;
         return result;
     }
+    /**
+     * 在线诊断
+     */
     public async getZaiXianZhenDuan() {
         const ZaiXianZhenDuanUrl = `https://ask.dxy.com/ama/index#/activity-share?activity_id=111`;
         return ZaiXianZhenDuanUrl;
     }
+    /**
+     * 疫情实况
+     */
     public async getYiQingShiKuang() {
         const YiQingShiKuangUrl = `https://ncov.dxy.cn/ncovh5/view/pneumonia?entrysource=APPiOS&from=groupmessage`;
         return YiQingShiKuangUrl;
