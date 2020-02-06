@@ -2,6 +2,7 @@ import { Wechaty, Friendship, Contact, Message, ScanStatus, Room } from 'wechaty
 import { ContactSelf } from 'wechaty/dist/src/user';
 import * as qrcodeTerminal from 'qrcode-terminal';
 import { textBuilder } from './defaultText';
+import { replyFilter, keywords } from './reply';
 
 // 延时函数，防止检测出类似机器人行为操作
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -31,35 +32,36 @@ function onLogout(user: ContactSelf) {
 async function onMessage(msg: Message) {
 
     const contact = msg.from() as Contact; // 发消息人
-    const content = msg.text().trim(); // 消息内容
+    const content = msg.text().trim() as string; // 消息内容
     const room = msg.room(); // 是否是群消息
-    const hasAt = msg.to();
-    console.log(hasAt);
-    const hasAtBot = room && (content.includes('@防疫卫士') || content.includes('@Tycho'));
-    const alias = await contact.alias() ?? contact.name(); // 发消息人备注
+    const hasAtBot = room && await msg.mentionSelf();
+    const msgSenderName = contact.name(); // 发消息人备注
     const isText = msg.type() === bot.Message.Type.Text;
-    console.log(`发消息人: ${contact.name()} 内容: ${content}`);
+
+    console.log(`发消息人: ${msgSenderName} 内容: ${content}  是否 @我了？: ${await msg.mentionSelf()}`);
     if (msg.self()) {
         return;
     }
 
     // 私聊
     if (contact.friend() && !room) {
-        console.log(`是 friend`);
-        // 加延迟，防封号
-        await delay(2000);
-        await contact.say(textBuilder(alias));
+        // 优先使用昵称
+        const name = await contact.alias() || msgSenderName;
+        if (keywords.some(k => content.includes(k))) {
+            // 加延迟，防封号
+            await delay(2000);
+            await contact.say(await replyFilter(content, name));
+        }
     }
 
     // 群聊
-    if (room && isText) {
+    if (room && isText && hasAtBot) {
         // 如果是群消息 目前只处理文字消息
         const topic = await room.topic();
-        if (hasAtBot) {
-            console.log(`群名: ${topic} 发消息人: ${contact.name()} 内容: ${content}`);
-            await delay(2000);
-            room.say(textBuilder());
-        }
+        console.log(`群名: ${topic} 发消息人: ${msgSenderName}  内容: ${content} `);
+        const msg = await replyFilter(content, msgSenderName);
+        await delay(2000);
+        await room.say(msg);
     }
 }
 
@@ -76,7 +78,7 @@ async function onRoomJoin(room: Room, inviteeList: Contact[], inviter: Contact, 
     console.log(`Room ${room.topic()} got new member ${nameList}, invited by ${inviter}`)
 }
 
-const bot = new Wechaty({ name: '防疫卫士' });
+const bot = new Wechaty({ name: '防疫精灵' });
 
 bot.on('scan', onScan);
 bot.on('login', onLogin);
@@ -87,4 +89,4 @@ bot.on('room-join', onRoomJoin);
 bot
     .start()
     .then(() => console.log('开始登陆微信'))
-    .catch(e => console.error(e));
+    .catch((e: Error) => console.error(e));
