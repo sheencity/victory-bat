@@ -50,11 +50,11 @@ async function onMessage(msg: Message) {
     if (contact.friend() && !room) {
         // 优先使用昵称
         const name = await contact.alias() || msgSenderName;
-        // if (keywords.some(k => content.includes(k))) {
+        if (keywords.some(k => content.includes(k))) {
             // 加延迟，防封号
             await delay(2000);
             await contact.say(await replyFilter(content, name));
-        // }
+        }
     }
 
     // 群聊
